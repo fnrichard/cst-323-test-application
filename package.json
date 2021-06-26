@@ -1,0 +1,24 @@
+{
+  "name": "cst-323-test-application",
+  "version": "1.0.0",
+  "description": "test application for cloud services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fnrichard/cst-323-test-application.git"
+  },
+  "author": "richard williamson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fnrichard/cst-323-test-application/issues"
+  },
+  "homepage": "https://github.com/fnrichard/cst-323-test-application#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.6.2"
+  }
+}
