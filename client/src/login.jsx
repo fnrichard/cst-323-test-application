@@ -6,6 +6,8 @@ export default class Login extends PureComponent {
         this.state = {
             username: '',
             password: '',
+            loggedIn: false,
+            loginError: false,
         };
     }
 
@@ -16,46 +18,79 @@ export default class Login extends PureComponent {
     }
 
     onClickButton() {
+        const request = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(this.state),
+        };
 
+        // need to update this... to be... the host name... issue.. at hand
+        fetch(`http://${window.location.host}/api/login`, request)
+            .then((response) => {
+                if (response.status !== 404) {
+                    this.setState({ loggedIn: true, loginError: false });
+                } else {
+                    this.setState({ loginError: true, loggedIn: false });
+                }
+            })
+            .catch(error => this.setState({ error }));
     }
 
     render() {
         const {
             username,
             password,
+            loggedIn,
+            loginError,
         } = this.state;
 
         return (
-            <div class="login">
-                <h4>Please login</h4>
-                <form action="#">
-                    <div className="form-group">
-                        <label htmlFor="username">Username:</label>
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="username"
-                            placeholder="Enter desired username"
-                            value={username}
-                            onChange={(data) => this.onUpdateField('username', data.target.value)}
-                            onBlur={(data) => this.onUpdateField('username', data.target.value)}
-                        />
+            <>
+                {loginError && (
+                    <div className="error">
+                        Username and password was not correct
                     </div>
-                    <div className="form-group">
-                        <label htmlFor="password">Password</label>
-                        <input
-                            type="password"
-                            className="form-control"
-                            id="password"
-                            placeholder="Password"
-                            value={password}
-                            onChange={(data) => this.onUpdateField('password', data.target.value)}
-                            onBlur={(data) => this.onUpdateField('password', data.target.value)}
-                        />
+                )}
+                {loggedIn && (
+                    <div>
+                        Welcome!
                     </div>
-                    <button type="button" className="btn btn-primary" onClick={() => this.onClickButton() }>Submit</button>
-                </form>
-            </div>
+                )}
+                {!loggedIn && (
+                    <div class="login">
+                        <h4>Please login</h4>
+                        <form action="#">
+                            <div className="form-group">
+                                <label htmlFor="username">Username:</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="username"
+                                    placeholder="Enter desired username"
+                                    value={username}
+                                    onChange={(data) => this.onUpdateField('username', data.target.value)}
+                                    onBlur={(data) => this.onUpdateField('username', data.target.value)}
+                                />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="password">Password</label>
+                                <input
+                                    type="password"
+                                    className="form-control"
+                                    id="password"
+                                    placeholder="Password"
+                                    value={password}
+                                    onChange={(data) => this.onUpdateField('password', data.target.value)}
+                                    onBlur={(data) => this.onUpdateField('password', data.target.value)}
+                                />
+                            </div>
+                            <button type="button" className="btn btn-primary" onClick={() => this.onClickButton() }>Submit</button>
+                        </form>
+                    </div>
+                )}
+            </>
         )
     }
 };

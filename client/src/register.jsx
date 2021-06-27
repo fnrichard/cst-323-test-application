@@ -8,6 +8,9 @@ export default class Register extends PureComponent {
         password: '',
         firstName: '',
         lastName: '',
+        registrationComplete: false,
+        data: false,
+        error: false,
     };
   }
 
@@ -18,7 +21,19 @@ export default class Register extends PureComponent {
   }
 
   onClickButton() {
+      const request = {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(this.state),
+      };
 
+      // need to update this... to be... the host name... issue.. at hand
+      fetch(`http://${window.location.host}/api/users/new`, request)
+          .then(response => response.json())
+          .then(data => this.setState({ registrationComplete: true, data }))
+          .catch(error => this.setState({ error }));
   }
 
   render() {
@@ -27,63 +42,83 @@ export default class Register extends PureComponent {
         password,
         firstName,
         lastName,
+        registrationComplete,
+        error,
+        data
     } = this.state;
 
+    console.log('error => ', error);
+    console.log('data => ', data);
+
     return (
-        <div class="registration">
-            <h4>Please enter your registration information</h4>
-            <form action="#">
-                <div className="form-group">
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="username"
-                        placeholder="Enter desired username"
-                        value={username}
-                        onChange={(data) => this.onUpdateField('username', data.target.value)}
-                        onBlur={(data) => this.onUpdateField('username', data.target.value)}
-                    />
+        <>
+            {error && (
+                <div className="error">
+                    {JSON.stringify(error)}
                 </div>
-                <div className="form-group">
-                    <label htmlFor="password">Password</label>
-                    <input
-                        type="password"
-                        className="form-control"
-                        id="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(data) => this.onUpdateField('password', data.target.value)}
-                        onBlur={(data) => this.onUpdateField('password', data.target.value)}
-                    />
+            )}
+            {registrationComplete && (
+                <div>
+                    Your account has been created please <a href="/login">login</a>.
                 </div>
-                <div className="form-group">
-                    <label htmlFor="firstName">First Name:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="firstName"
-                        placeholder="Enter first name"
-                        value={firstName}
-                        onChange={(data) => this.onUpdateField('firstName', data.target.value)}
-                        onBlur={(data) => this.onUpdateField('firstName', data.target.value)}
-                    />
+            )}
+            {!registrationComplete && (
+                <div className="registration">
+                    <h4>Please enter your registration information</h4>
+                    <form action="#">
+                        <div className="form-group">
+                            <label htmlFor="username">Username:</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="username"
+                                placeholder="Enter desired username"
+                                value={username}
+                                onChange={(data) => this.onUpdateField('username', data.target.value)}
+                                onBlur={(data) => this.onUpdateField('username', data.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="password">Password</label>
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                placeholder="Password"
+                                value={password}
+                                onChange={(data) => this.onUpdateField('password', data.target.value)}
+                                onBlur={(data) => this.onUpdateField('password', data.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="firstName">First Name:</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="firstName"
+                                placeholder="Enter first name"
+                                value={firstName}
+                                onChange={(data) => this.onUpdateField('firstName', data.target.value)}
+                                onBlur={(data) => this.onUpdateField('firstName', data.target.value)}
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="lastName">Last Name:</label>
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="lastName"
+                                placeholder="Enter last name"
+                                value={lastName}
+                                onChange={(data) => this.onUpdateField('lastName', data.target.value)}
+                                onBlur={(data) => this.onUpdateField('lastName', data.target.value)}
+                            />
+                        </div>
+                        <button type="button" className="btn btn-primary" onClick={() => this.onClickButton() }>Submit</button>
+                    </form>
                 </div>
-                <div className="form-group">
-                    <label htmlFor="lastName">Last Name:</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="lastName"
-                        placeholder="Enter last name"
-                        value={lastName}
-                        onChange={(data) => this.onUpdateField('lastName', data.target.value)}
-                        onBlur={(data) => this.onUpdateField('lastName', data.target.value)}
-                    />
-                </div>
-                <button type="button" className="btn btn-primary" onClick={() => this.onClickButton() }>Submit</button>
-            </form>
-        </div>
+            )}
+        </>
     )
   }
 };
