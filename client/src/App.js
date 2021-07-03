@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import Register from "./register";
 import Login from "./login";
+import Users from "./users";
 
 function App() {
   return (
@@ -25,6 +26,9 @@ function App() {
             <li className="nav-item">
               <a className="nav-link" href="/login">Login</a>
             </li>
+            <li className="nav-item">
+              <a className="nav-link" href="/users">List Users</a>
+            </li>
           </ul>
         </div>
       </nav>
@@ -36,6 +40,9 @@ function App() {
             </Route>
             <Route path="/login">
               <Login />
+            </Route>
+            <Route path="/users">
+              <Users />
             </Route>
             <Route path="/">
               <div>

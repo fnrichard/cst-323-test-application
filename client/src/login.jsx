@@ -26,7 +26,6 @@ export default class Login extends PureComponent {
             body: JSON.stringify(this.state),
         };
 
-        // need to update this... to be... the host name... issue.. at hand
         fetch(`http://${window.location.host}/api/login`, request)
             .then((response) => {
                 if (response.status !== 404) {

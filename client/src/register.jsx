@@ -29,7 +29,6 @@ export default class Register extends PureComponent {
           body: JSON.stringify(this.state),
       };
 
-      // need to update this... to be... the host name... issue.. at hand
       fetch(`http://${window.location.host}/api/users/new`, request)
           .then(response => response.json())
           .then(data => this.setState({ registrationComplete: true, data }))
