@@ -29,7 +29,7 @@ export default class Register extends PureComponent {
           body: JSON.stringify(this.state),
       };
 
-      fetch(`http://${window.location.host}/api/users/new`, request)
+      fetch(`${window.location.origin}/api/users/new`, request)
           .then(response => response.json())
           .then(data => this.setState({ registrationComplete: true, data }))
           .catch(error => this.setState({ error }));

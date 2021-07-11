@@ -23,7 +23,7 @@ export default class User extends PureComponent {
 
         const { id } = this.props;
 
-        fetch(`http://${window.location.host}/api/users/${id}`, request)
+        fetch(`${window.location.origin}/api/users/${id}`, request)
             .then(response => response.json())
             .then(user => this.setState({ user }))
             .catch(error => this.setState({ error }));
@@ -46,7 +46,7 @@ export default class User extends PureComponent {
 
         const { user } = this.state;
 
-        fetch(`http://${window.location.host}/api/users/${user.id}`, request)
+        fetch(`${window.location.origin}/api/users/${user.id}`, request)
             .then(response => response.json())
             .then(data => window.location = '/users')
             .catch(error => this.setState({ error }));

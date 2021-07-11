@@ -20,7 +20,7 @@ export default class Users extends PureComponent {
             },
         };
 
-        fetch(`http://${window.location.host}/api/users`, request)
+        fetch(`${window.location.origin}/api/users`, request)
             .then(response => response.json())
             .then(users => this.setState({ users }))
             .catch(error => this.setState({ error }));
@@ -66,7 +66,7 @@ export default class Users extends PureComponent {
                             <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>{user.firstName}</td>
                             <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>{user.lastName}</td>
                             <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>
-                                <a href={`http://${window.location.host}/user/${user.id}`}>Edit</a>
+                                <a href={`${window.location.origin}/user/${user.id}`}>Edit</a>
                             </td>
                         </tr>
                     ))}

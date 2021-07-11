@@ -26,7 +26,7 @@ export default class Login extends PureComponent {
             body: JSON.stringify(this.state),
         };
 
-        fetch(`http://${window.location.host}/api/login`, request)
+        fetch(`${window.location.origin}/api/login`, request)
             .then((response) => {
                 if (response.status !== 404) {
                     this.setState({ loggedIn: true, loginError: false });
