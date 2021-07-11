@@ -43,11 +43,7 @@ export default class Register extends PureComponent {
         lastName,
         registrationComplete,
         error,
-        data
     } = this.state;
-
-    console.log('error => ', error);
-    console.log('data => ', data);
 
     return (
         <>

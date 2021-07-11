@@ -1,12 +1,23 @@
-import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
+  useParams,
 } from "react-router-dom";
+
 import Register from "./register";
 import Login from "./login";
 import Users from "./users";
+import User from "./user";
+
+import './App.css';
+
+function GetUser() {
+  let { id } = useParams();
+  return (
+     <User id={id} />
+  );
+}
 
 function App() {
   return (
@@ -44,6 +55,7 @@ function App() {
             <Route path="/users">
               <Users />
             </Route>
+            <Route path="/user/:id" children={<GetUser />} />
             <Route path="/">
               <div>
                 Welcome!

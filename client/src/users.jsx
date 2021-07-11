@@ -33,40 +33,40 @@ export default class Users extends PureComponent {
         } = this.state;
 
         return (
-            <table className="table-dark">
+            <table className="table-secondary" width="50%">
                 <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Username</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>&nbsp;</th>
+                        <th className="center table-dark">ID</th>
+                        <th className="center table-dark">Username</th>
+                        <th className="center table-dark">First Name</th>
+                        <th className="center table-dark">Last Name</th>
+                        <th className="center table-dark">&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>
                     {!users && !error && (
                         <tr>
-                            <td colSpan={5}>Loading...</td>
+                            <td className="center" colSpan={5}>Loading...</td>
                         </tr>
                     )}
                     {error && (
                         <tr>
-                            <td colSpan={5}>There was an error loading the users</td>
+                            <td className="center" colSpan={5}>There was an error loading the users</td>
                         </tr>
                     )}
                     {users?.length === 0 && (
                         <tr>
-                            <td colSpan={5}>There are no users to list</td>
+                            <td className="center" colSpan={5}>There are no users to list</td>
                         </tr>
                     )}
-                    {users?.length > 0 && users.map((user) => (
+                    {users?.length > 0 && users.map((user, idx) => (
                         <tr>
-                            <td>{user.id}</td>
-                            <td>{user.username}</td>
-                            <td>{user.firstName}</td>
-                            <td>{user.lastName}</td>
-                            <td>
-                                <a href={`http://${window.location.host}/users/${user.id}`}>Edit</a>
+                            <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>{user.id}</td>
+                            <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>{user.username}</td>
+                            <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>{user.firstName}</td>
+                            <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>{user.lastName}</td>
+                            <td className={`center ${idx % 2 === 0 ? 'table-light' : ''}`}>
+                                <a href={`http://${window.location.host}/user/${user.id}`}>Edit</a>
                             </td>
                         </tr>
                     ))}

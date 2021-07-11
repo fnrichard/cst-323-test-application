@@ -29,6 +29,29 @@ app.post('/api/users/new', (request, response) => {
         .catch((error) => response.json({ message: error }));
 });
 
+app.get('/api/users/:id', async (request, response) => {
+    return response.json(await User.findByPk(Number(request.params.id)));
+});
+
+app.put('/api/users/:id', async (request, response) => {
+    const user = await User.findByPk(Number(request.params.id));
+    const {
+        firstName = user.firstName,
+        lastName = user.lastName,
+        password = user.password,
+    } = request.body;
+    user.firstName = firstName;
+    user.lastName = lastName;
+    user.password = password;
+    await user.save();
+
+    return response.json(user);
+});
+
+app.get('/api/users', async (request, response) => {
+    return response.json(await User.findAll());
+});
+
 // async await makes more sense here
 app.post('/api/login', async (request, response) => {
     const user = await User.findOne({ where: { username: request.body.username, password: request.body.password } });

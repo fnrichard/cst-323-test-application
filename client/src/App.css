@@ -1,1 +1,4 @@
 .error { color: red }
+
+table { border-collapse: collapse; border: 1px solid #77a; margin-top: 1.8rem; }
+.center { text-align: center; }
