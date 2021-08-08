@@ -2,24 +2,17 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const User = require("./lib/model/user");
+const User = require('./lib/model/user');
+const logger = require('./lib/logger');
 
 // our lovely server
 const app = express();
 
-// the port we listen on
-/**
- * Get port from environment and store in Express.
- */
-
-const port = normalizePort(process.env.PORT || '3000');
-app.set('port', port);
-
 /**
  * Normalize a port into a number, string, or false.
  */
-
 function normalizePort(val) {
+    logger.info(`normalizePort called with ${val}`);
     const port = parseInt(val, 10);
 
     if (isNaN(port)) {
@@ -35,6 +28,13 @@ function normalizePort(val) {
     return false;
 }
 
+/**
+ * Get port from environment and store in Express.
+ */
+const port = normalizePort(process.env.PORT || '3000');
+app.set('port', port);
+
+
 // allow us to parse body posts
 app.use(express.json());
 
@@ -49,16 +49,25 @@ app.post('/api/users/new', (request, response) => {
         firstName: request.body.firstName,
         lastName: request.body.lastName,
     };
+    logger.info('POST /api/users/new called');
     User.create(params)
-        .then(() => response.json({message: 'ok'}))
-        .catch((error) => response.json({ message: error }));
+        .then(() => {
+            logger.info('user creation successful')
+            response.json({message: 'ok'})
+        })
+        .catch((error) => {
+            logger.error(error);
+            response.json({ message: error })
+        });
 });
 
 app.get('/api/users/:id', async (request, response) => {
+    logger.info(`GET /api/users/${request.params.id} called`);
     return response.json(await User.findByPk(Number(request.params.id)));
 });
 
 app.put('/api/users/:id', async (request, response) => {
+    logger.info(`PUT /api/users/${request.params.id} called`);
     const user = await User.findByPk(Number(request.params.id));
     const {
         firstName = user.firstName,
@@ -74,21 +83,25 @@ app.put('/api/users/:id', async (request, response) => {
 });
 
 app.get('/api/users', async (request, response) => {
+    logger.info('GET /api/users called');
     return response.json(await User.findAll());
 });
 
 // async await makes more sense here
 app.post('/api/login', async (request, response) => {
+    logger.info('POST /api/login called');
     const user = await User.findOne({ where: { username: request.body.username, password: request.body.password } });
     if (user) {
+        logger.info('successful login');
         return response.json({message: 'ok'});
     }
+    logger.info('unsuccessful login');
     response.status(404).send('Not found');
 });
 
 // catch all for web content
 app.get('*', (request, response) => {
-    console.log(new Date(), request.url);
+    logger.info(`GET ${request.url} called`);
     if (!request.url.includes('../') && !request.url.includes('./')) {
         const file = request.url === '/' || (!request.url.includes('.js') && !request.url.includes('.css') && !request.url.includes('.ico'))
             ? 'index.html'
@@ -107,5 +120,5 @@ app.get('*', (request, response) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`)
+    logger.info(`Example app listening at http://localhost:${port}`)
 })
